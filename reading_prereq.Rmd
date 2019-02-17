@@ -1,0 +1,741 @@
+---
+title: "Has SLCC's Reading Pre-requisite Worked?"
+author: | 
+  | Jeff Webb
+  | Office of Institutional Research and Reporting,
+  | Salt Lake Community College
+date: \today
+header-includes:
+    - \usepackage{fancyhdr}
+    - \pagestyle{fancy}
+    - \rhead{\includegraphics[width=3cm,height=3cm]{logo.jpg}}
+
+output:
+  bookdown::pdf_document2:
+    toc: no
+    number_sections: false
+---
+
+# Introduction
+
+In September 2017 David Hubert requested that the office of Institutional Research and Reporting (IRR) investigate whether SLCC's implementation of the reading pre-requisite (RDG/WRTG 900/990, or, depending on the year, ENGL 900/990) for a group of 33 college level courses (hereafter called "courses with reading pre-requisite") had any effect on student course perfromance. 
+
+The majority of the courses with reading pre-requisite were in Biology, Math and English, and the majority of the pre-requisites in those courses were implemented in summer 2009 (though some were as early as fall 2007 and some as recently as summer 2016).
+
+In initial exploratory research, IRR compared course grades before implementation of the reading pre-requisite in the above-mentioned classes to course grades after implementation.  (We controlled for course, instructor and term in this analysis.  No demographic covariate controls were used, with the reasoning that the timing of the implementation, being arbitrary, would ensure comparability in the before and after groups.)  We found no effect.  However, it seemed clear that the majority of students taking these courses would not have tested into the pre-requisite reading courses, and that any grade effect attributable to the pre-requisite courses would have been only for the relatively small group of students taking the reading pre-requisite.  Any effect would likely have been masked.  It is not surprising, then, that we found no grade effect.  This doesn't mean there was no effect, since the study design may have been insufficient to detect it.  Given this uncertainty IR was asked to investigate further.  This report presents our findings.
+
+# Research Questions
+
+1. How many students, after getting a low reading Accuplacer (CPT1) score, enrolled in reading courses or courses requiring the reading pre-requisite?
+
+2. Which courses does the reading pre-requisite most affect?  That is, after taking the reading courses, which courses do students most frequently enroll in?
+
+3. Does the reading pre-requisite work?  In other words, does the requirement for low-scoring CPT1 students to do reading course work demonstrably improve their performance in college level courses with a reading pre-requisite?  (Note:  this is a causal question.)  There are two ways of interpreting this question:  1.  narrowly, as a question about the *effectiveness of the reading courses*.  2.  broadly, as a question about the *effectiveness of the pre-requisite as actually implemented*, ignoring whether students had actually taken a reading course.
+
+
+
+# Summary of Findings
+
+Reading courses improved the grade performance of low CPT1 students in courses with a reading pre-requisite.  The effect was modest, estimated as a grade improvement of .16 (on a 4 point scale) for students falling in a narrow band around the CPT1 threshold. As the earlier study mentioned above demonstrated, however, this grade effect did not improve overall pass rates in these courses.
+
+Students with low CPT1 scores who tested into reading courses also had lower persistence into college-level courses with reading pre-requisite, compared to students with higher scores.  One downside of the reading pre-requisite, then, may be that it makes persistence into college level courses harder for low CPT1 students.
+
+**Recommendation**:  We recommend that the college retain the reading pre-requisite but explore additional ways to make the requirement less burdensome on students.  
+
+# Data and Data Modeling
+
+One of the challenges in assembling the source data for this study was that the thresholds for the reading pre-requisite have changed over the years, and have differed between classes.  The courses with reading pre-requisite  included the following:  BIOL1010, BIOL1030, BIOL1050, BIOL1070, BIOL1090, BIOL112, BIOL1400, ENGL2640, HIST1100, HIST1110, LE1200, MA1011,  MATH900, MATH920, MATH950, MATH980, MATH1030, MATH1040, BIOL1610, BTEC1010, ECON1740, ENGL1010, ENGL1260, HIST1700, LE1260, MATH1010, MATH1050, MATH1060, MATH1080, MATH1090, POLS1100. The thresholds were taken from the Banner table `scrrtst`. 
+
+<!-- (which is difficult to work with because it is improperly structured as a look-up table;  Banner was designed only as a transactional/operational system, not for the convenience of researchers.)  -->
+
+We made several simplifying choices in modeling the data:
+
+- We focused on students whose first enrollment *postdated* their reading placement test, and filtered out those with any earlier enrollments.  This made it easier to match the CPT1 test date with an enrollment period.
+- For the purposes of this study we considered only one reading placement test: the Accuplacer reading test or CPT1.  We filtered  out students who may have used the ACT or SAT to satisfy the reading pre-requisite, or who transferred in the equivalent of ENGL1010 or the reading courses.
+- We considered only the first course with a reading pre-requisite  after the reading placement test.  (If a student took more than one such course then both were counted.  Students were, in this respect, sometimes duplicated.)
+- We used the student's highest CPT1 score to reconstruct whether they would have been required to take any reading courses. 
+
+This left us with a little over 75,000 students, who had more than 250,000 enrollments.
+
+The reading prerequisite turns out to be very complicated in practice.  Not only are different requirements imposed on students based on their CPT1 score and which course with a reading pre-requisite they wish to take, but these requirements have changed through the years.  Currently, as an illustration, the reading requirement for ENGL1010 works like this:
+
+- Student receives score of 40-57 on CPT1 and takes ENGL0900 (formerly two 5 credit courses: WRTG0900 and RDG0900) OR completes ESL1010 and ESL1020, then proceeds to the next courses in the reading pre-requisite sequence.
+- Student receives score of 58-74 on CPT1 and takes ENGL0990 (formerly WRTG0990 and RDG0990) OR completes ENGL0900 or the equivalent then takes ENGL0990.  
+- Student receives score of 75 or greater on CPT1 and is eligible for college English.
+
+However, the CPT1 thresholds vary by course, which means that there are, potentially, over 30 different CPT1 thresholds and associated course requirements for the courses with a reading pre-requisite, each of which has changed, sometimes substantially and sometimes frequently, over the years.  Therefore, we have made an additional modeling decision, which is not perfect but should get us most of the way towards defining a student who took the reading sequence:
+
+- Students who scored below the (course varying) CPT1 threshold, will be counted as having satisfied the reading prerequisite if they took and passed *one* of the following reading courses: ENGL0900, RDG0900, WRTG0900, ENGL0990, RDG0990, WRTG0990.  
+
+Additional modelling choices:
+
+- Grade performance included W, which was counted as 0.
+- Grades of TR (transfer) were removed, though these courses were counted towards pre-requisite satisfaction.
+
+# Method
+
+We used a regression discontinuity design to assess the impact of the reading courses for low CPT1 students. This method allowed us to investigate the *narrow* construal of research  question 3 above. In situations such as this one, where an arbitrary cut-off is used to assign a treatment (here the reading pre-requisite, consisting in RDG0900, ENGL0900, RDG0990, WRTG0990 or ENGL0990), we can compare students with similar scores on either side of that cut-off for subsequent performance.  The two groups are likely to be virtually identical in preparation and ability, with the result that treatment and control groups differ only randomly.  Regression discontinuity, consequently, is as close as we get to a randomized trial in observational settings. One of the drawbacks of the design is that our ability to infer causal effects is limited to the area immediately adjacent to the cut-off.  
+
+For these reasons, we also took a rougher approach, leveraging the fact that the reading pre-requisite was imposed at well-defined points in time for different courses.   We compared the way students with the same CPT1 scores  performed in the courses with a reading pre-requisite before and after implementation of the pre-requisite.  This is the *broad* construal of research  question 3 above: we are assessing the effect of the reading pre-requisite itself, not the reading courses.  For this exercise, then, we included those students who, in the period before the reading pre-requisite, elected on their own to take a reading course, and also included those who, in the period after the reading pre-requisite, did not take a reading course even though they were required to.  The problem with this approach is that the difficulty, implementation, or scoring of the CPT1 may have changed over the years, complicating such a before-after comparison.
+
+<!-- The two different methods should converge to the same result, increasing our confidence in the finding. -->
+
+
+# Results
+
+50% of the students in the dataset used for this research scored between 75 and 101. Figure \@ref(fig:dist) presents a histogram of the frequencies of students at each CPT1 score. For reference, over the years the threshold to test into ENGL1010 has been in the high 70s or lows 80s. 
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(results='asis',echo = FALSE, message=F, warning=F,cache=TRUE)
+library(tidyverse)
+library(knitr)
+library(bookdown)
+
+colors=c("#00ABE1", "#FFCD00", "#003865", "#833921")
+ convert_grade <- function(grade, include_w=F){
+  x <- grade
+  
+  if(include_w==F){
+    vec <- rep(NA, length(x))
+    vec[which(x=="A")] <- 4; vec[which(x=="A-")] <- 3.7; vec[which(x=="B+")] <- 3.4; vec[which(x=="B")] <- 3; vec[which(x=="B-")] <- 2.7;
+    vec[which(x=="C+")] <- 2.4; vec[which(x=="C")] <- 2; vec[which(x=="C-")] <- 1.7; vec[which(x=="D+")] <- 1.4; vec[which(x=="D")] <- 1;
+    vec[which(x=="D-")] <- .7; vec[which(x=="E")] <- 0; vec[which(x=="I")] <- 0
+  }
+  
+  if(include_w==T){
+    vec <- rep(NA, length(x))
+    vec[which(x=="A")] <- 4; vec[which(x=="A-")] <- 3.7; vec[which(x=="B+")] <- 3.4; vec[which(x=="B")] <- 3; vec[which(x=="B-")] <- 2.7;
+    vec[which(x=="C+")] <- 2.4; vec[which(x=="C")] <- 2; vec[which(x=="C-")] <- 1.7; vec[which(x=="D+")] <- 1.4; vec[which(x=="D")] <- 1;
+    vec[which(x=="D-")] <- .7; vec[which(x=="E")] <- 0; vec[which(x=="I")] <- 0;  vec[which(x=="W")] <- 0
+  }
+  
+  return(vec)
+ }
+ 
+ 
+ theme_slcc <- function(base_size=12) {
+  library(grid)
+  library(ggthemes)
+  (theme_foundation(base_size=base_size)
+    + theme(plot.title = element_text(face = "bold",
+                                      size = rel(1.2), hjust = 0.0),
+            text = element_text(),
+            panel.background = element_rect(colour = NA),
+            plot.background = element_rect(colour = NA),
+            panel.border = element_rect(colour = NA),
+            axis.title = element_text(face = "bold",size = rel(1)),
+            axis.title.y = element_text(angle=90,vjust =2),
+            axis.title.x = element_text(vjust = -0.2),
+            axis.text = element_text(), 
+            axis.line = element_line(colour="black"),
+            axis.ticks = element_line(),
+            panel.grid.major = element_line(colour="#f0f0f0"),
+            panel.grid.minor = element_blank(),
+            legend.key = element_rect(colour = NA),
+            legend.position = "bottom",
+            legend.direction = "horizontal",
+            legend.key.size= unit(0.2, "cm"),
+            legend.margin = margin(0, unit="cm"),
+            legend.title = element_text(face="italic"),
+            plot.margin=unit(c(10,5,5,5),"mm"),
+            strip.background=element_rect(colour="#f0f0f0",fill="#f0f0f0"),
+            strip.text = element_text(face="bold")
+    ))
+  
+}
+
+scale_fill_slcc <- function(...){
+  library(scales)
+  discrete_scale("fill","slcc",manual_pal(values = c("#00ABE1", "#FFCD00", "#003865", "#833921")), ...)
+  
+}
+
+scale_colour_slcc <- function(...){
+  library(scales)
+  discrete_scale("colour","slcc",manual_pal(values = c("#00ABE1", "#FFCD00", "#003865", "#833921")), ...)
+  
+}
+
+find_class_term <- function(class_flag, term){
+  vec <- class_flag*term
+  ifelse(sum(vec) > 0, vec[which(vec>0)[1]], 0)
+}
+
+find_term_seq <- function(term, gap=T){
+  if(gap==T){
+    ts <- seq(min(term),max(term), by=10)
+    ts <- ts[which(substr(ts, 5,6)=="20" | substr(ts, 5,6)=="30" | substr(ts, 5,6)=="40")]
+    df <- data.frame(terms=ts, seq=seq(1, length(ts)))
+    vec <- left_join(data.frame(terms=term), df, by="terms")$seq
+  }
+  if(gap==F){
+    u_terms <- unique(term)
+    u_terms <- u_terms[order(u_terms)]
+    df <- data.frame(terms=u_terms, seq=seq(1, length(u_terms)))
+    vec <- left_join(data.frame(terms=term), df, by="terms")$seq
+  }
+  vec
+  
+}
+
+
+```
+
+```{r include = FALSE}
+# data
+
+# select * from scrrtst
+# where scrrtst_tesc_code = 'CPT1'
+# order by scrrtst_surrogate_id;
+
+# thresholds
+t <- read_csv("threshold_11062017.csv")
+
+names(t) <- tolower(names(t))
+
+# fix thresholds so each term + threshold is in the dataset.  Pain in the ass
+
+t <- t %>%
+  mutate(class = paste0(scrrtst_subj_code, scrrtst_crse_numb)) %>%
+  dplyr::select(class , 
+                term = scrrtst_term_code_eff, 
+                score = scrrtst_test_score) %>%
+  arrange(class, term)
+
+terms = c(200240, 200320, 200330, 200340, 200420, 200430, 200440, 200520, 200530, 200540, 200620, 200630, 
+           200640, 200720, 200730, 200740, 200820, 200830, 200840, 200920, 200930, 200940, 201020, 201030, 
+           201040, 201120, 201130, 201140, 201220, 201230, 201240, 201320, 201330, 201340, 201420, 201430,
+           201440, 201520, 201530, 201540, 201620, 201630, 201640, 201720, 201730, 201740)
+
+classes <- NULL
+
+for(i in 1:length(unique(t$class))){
+  temp <- rep(unique(t$class)[i], length(terms))
+  classes <- c(classes, temp)
+  }
+
+t %<>% 
+  right_join(data.frame(class = classes, term = rep(terms, length(unique(t$class)))), by = c("class", "term")) %>%
+  group_by(class) 
+
+newt <- data.frame()
+
+for(i in 1:length(unique(t$class))){
+  temp <- subset(t, class == unique(t$class)[i])
+  for (j in 2:length(temp$class)){
+    temp$thresh[j] <- ifelse(is.na(temp$thresh[j]) & all(is.na(temp$thresh[1:j])), temp$thresh[j],
+                             ifelse(!is.na(temp$thresh[j]), temp$thresh[j],
+                                    temp$thresh[which(!is.na(temp$thresh[1:j]))[length(which(!is.na(temp$thresh[1:j])))]]))
+  }
+  
+  newt <- rbind(newt, data.frame(temp))
+}
+
+#function to return last
+ret_last <- function(x){
+  temp <- NULL
+  for(i in 1: length(x)){
+    newx <- x[1:i]
+    temp[i] <- ifelse(all(is.na(newx)), NA, newx[which(!is.na(newx))][length(newx[which(!is.na(newx))])]) 
+  }
+  temp
+}
+
+newt <- newt %>%
+  arrange(class, term) %>%
+  group_by(class) %>%
+  mutate(score = ret_last(score))
+
+
+# newt should now have each row sequentially filled with the last relevant value
+
+
+  
+```
+
+```{r include = FALSE}
+
+# SQL query
+
+# SELECT DISTINCT person_uid,
+#                   sortest_tesc_code,
+#                   sortest_test_date,
+#                   sortest_test_score,
+#                   course_identification,
+#                   academic_period,
+#                   stvterm_start_date,
+#                   (stvterm_start_date - sortest_test_date) / 365 AS time_since,
+#                   final_grade
+#     FROM student_course
+#          LEFT JOIN sortest ON person_uid = sortest_pidm
+#          LEFT JOIN stvterm ON academic_period = stvterm_code
+#    WHERE     course_identification IN ('BIOL1010',
+#                                        'BIOL1030',
+#                                        'BIOL1050',
+#                                        'BIOL1070',
+#                                        'BIOL1090',
+#                                        'BIOL1120',
+#                                        'BIOL1400',
+#                                        'ENGL2640',
+#                                        'HIST1100',
+#                                        'HIST1110',
+#                                        'LE1200',
+#                                        'MA1011',
+#                                        'MATH0001',
+# 									   'MATH0002',
+# 									   'MATH0003',
+#                                        'MATH0900',
+#                                        'MATH0920',
+#                                        'MATH0950',
+#                                        'MATH0980',
+# 									   'MATH0990',
+#                                        'MATH1030',
+#                                        'MATH1040',
+#                                        'BIOL1610',
+#                                        'BTEC1010',
+#                                        'ECON1740',
+#                                        'ENGL1010',
+#                                        'ENGL0900',
+#                                        'ENGL0990',
+# 									   'RDG0900',
+# 									   'RDG0990',
+# 									   'WRTG0900',
+# 									   'WRTG0990',
+#                                        'ENGL1260',
+# 									   'ENGL2100',
+# 									   'ENG101',
+# 									   'ENG102',
+#                                        'HIST1700',
+#                                        'LE1260',
+# 
+#                                        'MATH1010',
+#                                        'MATH1050',
+#                                        'MATH1060',
+#                                        'MATH1080',
+#                                        'MATH1090',
+#                                        'POLS1100',
+# 									   'ESL1010',
+# 									   'ESL1020')
+#          AND (sortest_tesc_code = 'CPT1' or sortest_tesc_code ='SATR' or sortest_tesc_code ='A03')
+# ORDER BY person_uid, sortest_test_date;
+#Multiple rows per course.  1 row per course-test combination
+s <- read_csv("scores_grades_11032017.csv")
+names(s) <- tolower(names(s))
+
+# ids <- unique(s$person_uid)
+# length(ids)
+# # Explore
+# i=10000
+# subset(s, person_uid == ids[i]) %>% arrange(academic_period)
+# i = 1 + i
+```
+
+```{r include = FALSE}
+
+# create flag for student with courses before cpt. filter.
+# then also filter for highest test score 
+# join to threshold data
+
+s1 <- s %>%
+  group_by(person_uid) %>%
+  mutate(pos_time_since = ifelse(any(time_since < 0), 0, 1),
+         cpt_only = ifelse(all(sortest_tesc_code == "CPT1"),1,0)) %>%
+  filter(pos_time_since==1, cpt_only==1) %>%
+  group_by(person_uid) %>%
+  mutate(highest = ifelse(sortest_test_score==max(sortest_test_score),1,0)) %>%
+  filter(highest==1, cpt_only == 1) %>%
+  left_join(newt, by = c("academic_period"="term", "course_identification"="class")) %>%
+  dplyr::select(term = academic_period,
+                test_date = sortest_test_date,
+                id = person_uid,
+                test_score = sortest_test_score,
+                class = course_identification,
+                test_threshold = score,
+                time_since,
+                final_grade) %>%
+  mutate(time_since = round(time_since, 2),
+         diff =  as.numeric(test_score) - as.numeric(test_threshold),
+         num_grade = convert_grade(final_grade, include_w = T),
+         term_seq = find_term_seq(term, gap =F)) %>%
+  arrange(id, term)
+
+```
+
+```{r dist, results=T, fig.cap="CPT1 scores, 2000 - 2017. Dashed lines represent first and third quartile (25th and 75th percentile) of CPT1 scores, which are equivalent to scores of 75 and 101. Over the years the threshold to test into ENGL1010 has been in the high 70s or lows 80s."}
+s1 %>% 
+  filter(substr(test_date, 7, 10) >= 2000) %>%
+  group_by(id) %>%
+  slice(1)%>%
+  filter(as.numeric(test_score) < 130) %>%
+  ggplot(aes(as.numeric(test_score))) +
+  geom_bar(fill="#00ABE1", bins = 85) + 
+  theme_slcc() +
+  labs(x = "CPT1 scores") +
+  geom_vline(xintercept = quantile(as.numeric(s1$test_score), probs=c(.25, .75)), lty=2)
+  
+#summary(as.numeric(subset(s1, class=="ENGL1010")$test_threshold))
+```
+
+
+Because different courses have had very different CPT1 thresholds over the years, we can get a clearer picture of how many students in fact tested into a reading class by centering the CPT1 threshold at passing (with passing here defined by the CPT1 threshold of the first course  with a reading pre-requisite taken by a student).  Approximately 12% of the students who persisted to take a course with a reading pre-requisite tested *below* the CPT1 threshold for that course (left of the zero-centered line in Figure \@ref(fig:cpt1diffdist).)   
+
+```{r}
+# Identify ENGL1010, RDG 900/990 terms. Later we need to ensure that the first class that requires a reading course
+# post dates the reading courses, including english 1010 is a student somehow wound up taking that
+s2 <- s1 %>%
+  group_by(id) %>%
+  mutate(engl1010_termseq_trans = ifelse(any(class=="ENGL1010"), term_seq[which(class=="RDG0900" & final_grade == "TR")], NA),
+         rdg900_termseq = ifelse(any(class=="RDG0900" | class=="ENGL0900" | class=="WRTG0900"), term_seq[which((class=="RDG0900" & num_grade >= 2) | (class=="ENGL0900" & num_grade >= 2)| (class=="WRTG0900" & num_grade >= 2))][length(which((class=="RDG0900" & num_grade >= 2) | (class=="ENGL0900" & num_grade >= 2) | (class=="WRTG0900" & num_grade > 2)))], NA),
+         rdg990_termseq = ifelse(any(class=="RDG0990" | class=="ENGL0990" | class=="WRTG0990"), term_seq[which((class=="RDG0990" & num_grade >= 2) | (class=="ENGL0990" & num_grade >= 2)| (class=="WRTG0990" & num_grade >= 2))][length(which((class=="RDG0990" & num_grade >= 2) | (class=="ENGL0990" & num_grade >= 2) | (class=="WRTG0990" & num_grade >= 2)))], NA),
+         engl1010_term_trans = ifelse(!is.na(engl1010_termseq_trans), term[which(class==ENGL1010 & final_grade=="TR")], NA),
+           rdg900_term = ifelse(!is.na(rdg900_termseq), term[which((class=="RDG0900" & num_grade >= 2) | (class=="ENGL0900" & num_grade >= 2)| (class=="WRTG0900" & num_grade >= 2))][length(which((class=="RDG0900" & num_grade >= 2) | (class=="ENGL0900" & num_grade >= 2) | (class=="WRTG0900" & num_grade > 2)))], NA),
+           rdg990_term = ifelse(!is.na(rdg990_termseq), term[which((class=="RDG0990" & num_grade >= 2) | (class=="ENGL0990" & num_grade >= 2)| (class=="WRTG0990" & num_grade >= 2))][length(which((class=="RDG0990" & num_grade >= 2) | (class=="ENGL0990" & num_grade >= 2) | (class=="WRTG0990" & num_grade >= 2)))], NA)) 
+
+
+
+# Trim dataset to the first non-reading course
+s3 <- s2 %>%
+  filter(class != "WRTG0990", class != "RDG0990",class != "WRTG0900",class != "RDG0900",class != "ENGL0990",class != "ENGL0900", final_grade!="TR", !is.na(num_grade)) %>%
+  group_by(id) %>%
+  mutate(term_seq2 = find_term_seq(term, gap =F),
+         cut = ifelse((!is.na(rdg900_term) & rdg900_term > first(term)) | 
+                        (!is.na(rdg990_term) & rdg990_term > first(term)) | 
+                        (!is.na(engl1010_term_trans) & engl1010_term_trans > first(term)), 1, 0)) %>%
+         filter(term_seq2==1, cut==0)
+
+# ids <- unique(s3$id)
+# i=1
+# subset(s3, id == ids[i]) %>% arrange(term)
+# subset(s2, id == ids[i]) %>% arrange(term)
+# i = 1 + i
+
+# how many students are taking the reading placcement  before/after?
+
+s3$before_after <- ifelse(is.na(s3$test_threshold), "before", "after")
+
+
+
+```
+
+
+```{r cpt1diffdist, fig.cap="CPT1 scores centered at pre-requisite threshold for the first course taken with a reading pre-requisite, 2000-2017. Students with scores to the right of the dashed line tested out of the reading pre-requisite.  This plot includes only students who tested into or persisted to take a course with reading pre_requisite."}
+s3 %>% 
+  filter(substr(test_date, 7, 10) >= 2000) %>%
+  group_by(id) %>%
+  slice(1) %>%
+  filter(diff< 160) %>%
+  ggplot(aes(diff)) +
+  geom_bar(fill="#00ABE1") +
+  geom_vline(xintercept=0, lty=2)   +
+  theme_slcc() +
+  labs(x = "CPT1 scores, centered at pre-requisite threshold") 
+
+#nrow(subset(s3, diff < 0))/nrow(subset(s3, !is.na(diff)))
+```
+
+The strange shape of the distribution in Figure \@ref(fig:cpt1diffdist) is worth commenting on.  The discontinuity at 0 is likely due to the lower persistence of students who tested into one or more reading  pre-requisite courses.  We would expect that, in the absence of the reading pre-requisite, the distribution for the below zero scores would look continuous with the above zero scores: roughly bell-shaped.  We could therefore interpret the discontinuity as the cost of the reading pre-requisite:  faced with the burden of additional courses, students may opt out; or, while pursuing those additional courses, life happens and they may drop out.  The reading pre-requisite improves performance, as we'll see below, but possibly at the cost of dissuading students from starting or continuing college.
+
+We can consider this phenomenon from a slightly different perspective.  Figure \@ref(fig:cpt1) shows the percentage of students, out of all those who took the CPT1, who went on to take a course with a reading pre-requisite. 
+
+```{r cpt1, fig.cap = "Percentage of students taking a course with a reading pre-requisite, out of all those who took the CPT1. Dashed lines represent the minimum and maximum CPT1 thresholds. Students who scored below 58 (the left line) were, historically, required to take at least 2 but often 4 reading courses.  Students who scored above 81 (the right line) were required to take no reading courses.  The percentage of students taking courses with reading pre-requisites clearly corresponds to these cutpoints, with about 10-15% of students with the lowest CPT1 scores advancing to take a course with reading pre-requisite, compared to 50% with the highest scores.",results=T}
+#But we also want to know:  how many students has the reading prereq dissuaded?
+
+
+# sql query for all reading scores
+
+# select sortest_pidm,
+# sortest_tesc_code,
+# sortest_test_date,
+# sortest_test_score from sortest
+# where sortest_tesc_code = 'AO1' or sortest_tesc_code = 'CPT1' or sortest_tesc_code = 'SATR'
+# order by sortest_pidm, sortest_test_date;
+
+all_scores <- read_csv("sortest_scores_11142017.csv")
+names(all_scores) <- tolower(names(all_scores))
+
+all_scores <- all_scores %>%
+  dplyr::select(id = sortest_pidm, 
+        test = sortest_tesc_code,
+        date= sortest_test_date,
+        test_score = sortest_test_score) %>%
+  group_by(id) %>%
+  mutate(all_cpt = ifelse(all(test=="CPT1"),1,0),
+         test_score = as.numeric(test_score)) %>%
+  filter(all_cpt==1) %>%
+  group_by(id) %>%
+  slice(length(id))
+
+all_scores <- all_scores %>%
+  dplyr::select(id, test_score) %>%
+  left_join(s3, by = "id")
+
+all_scores %>%
+  filter(test_score.x < 150, test_score.x > 26) %>%
+  group_by(test_score.x) %>%
+  dplyr::summarize(count = n(),
+            class = sum(ifelse(is.na(class),0,1)),
+            perc = class/count*100) %>%
+  ggplot(aes(test_score.x, perc)) + 
+  geom_line(col="#00ABE1") +
+  theme_slcc() +
+  labs(y = "percentage",
+       x = "CPT1 score") +
+  geom_vline(xintercept = c(min(as.numeric(s3$test_threshold), na.rm=T),
+                            max(as.numeric(s3$test_threshold), na.rm=T)), lty = 2)
+             
+
+
+  
+```
+
+Figure \@ref(fig:cpt1) includes two vertical lines indicating the minimum and the maximum CPT1 threshold for courses with a reading pre-requisite. Students who scored below 58 (the left line) were, historically, required to take at least 2 but often 4 reading courses (RDG900, WRTG900, RDG990, WRTG990).  These courses have since been integrated into a two course sequence, ENGL900/ENGL990, thus reducing the developmental burden on students, especially those with lower CPT1 scores.  Students who scored above 81 (the right line) were required to take no reading courses.  The percentage of students taking courses with reading pre-requisites clearly corresponds to these cutpoints, with about 10-15% of students with the lowest CPT1 scores advancing to take a course with reading pre-requisite, compared to 50% with the highest scores.  The reading pre-requisite appears to have made it less likely that students persisted into college-level courses.
+
+Some students with low CPT1 scores elected to take reading classes in the period before they were required to (2009 and before, for the most part), but the reading pre-requisite, as we would expect, increased the percentage of students taking those classes.   Figure \@ref(fig:beforeafter) shows that before the reading pre-requisite between 25% and 50% of students with low CPT1 scores elected to take a reading course.  This percentage went up after implementation of the reading pre-requisite with enrollment in reading courses approaching 100% for students with CPT1 scores below 50.
+
+Why didn't it go all the way to 100%?  Some students inexplicably found a way around the pre-requisite, even after getting a low CPT1 score, and showed up in a course with reading pre-requisite without having taken a reading course or having transferred in an equivalent course.  Also, as we saw above, the minimum CPT1 threshold for a course with a reading pre-requisite was 58; therefore, all of the students with scores less than 58 would have been required to take a reading course, but that would have been less consistently true for students with scores above 58, depending on the course.  The dramatic drop in reading courses visible at about 80 corresponds roughly to the CPT1 cutoff for ENGL1010.  Why would students prior to the implementation of the reading pre-requisite have responded to that threshold?  There must have been some business process at the time---advising, perhaps?---that encouraged low CPT1 students to take a reading course, even though they were not required to do so. 
+
+```{r beforeafter, fig.cap="Percentage of students taking any reading class before and after the beginning of the reading pre-requisite. Before the reading pre-requisite between 25% and 50% of students with low CPT1 scores elected to take a reading course.  This percentage went up after implementation of the reading pre-requisite, as expected, with enrollment in reading courses approaching 100% among those scoring less than 50 on the CPT1.",results=T}
+s3 %>% 
+  group_by(test= as.numeric(test_score), time = before_after) %>%
+  dplyr::summarize(n=n(),
+    count_rdg = sum(ifelse(!is.na(rdg900_term) | !is.na(rdg990_term),1,0))) %>%
+  mutate(perc=round(count_rdg/n,2)) %>%
+  filter(test<150, test > 25) %>%
+  ggplot(aes(test, perc*100, col=time)) +
+  geom_line() +
+  theme_slcc() +
+  scale_colour_slcc() + 
+  labs(x = "CPT1 score",
+       y = "Percentage")
+  
+
+```
+
+```{r}
+
+#Why is there a dropoff? and why is rthe blue line not 100% 
+
+# ids <- subset(s3, is.na(rdg900_term) & is.na(rdg990_term) & is.na(engl1010_term_trans) & test_score=="030" & before_after=="after")$id
+# 
+# i = 1
+# subset(s1, id==ids[i])
+# subset(s3, id==ids[i])
+# subset(s, person_uid==ids[i]) %>% arrange(academic_period)
+# i = 1 + i
+# 
+# subset(s1, class=="RDG0900" & final_grade=="TR")
+# subset(s1, class=="RDG0990" & final_grade=="TR")
+# subset(s1, class=="ENGL1010" & final_grade=="TR")
+
+```
+
+Which courses do students take first after completing the required reading sequence?  ENGL1010, by far.  See Figure \@ref(fig:course).
+
+
+```{r course, fig.cap="Counts of students enrolling in their first course with reading pre-requisite taken after students completing the reading sequence.  This plot includes only students who took reading courses.", results=T}
+#Visualize first courses taken after reading sequence
+s3 %>%
+  mutate(reading_student = ifelse(!is.na(rdg900_term) | !is.na(rdg990_term), 1,0)) %>%
+  filter(reading_student == 1) %>%
+  ggplot(aes(class)) +
+  geom_bar(fill="#00ABE1")  +
+  theme_slcc() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  labs(x = "courses")
+  
+```
+
+```{r include = F}
+
+# s3 %>% 
+#   group_by(id) %>%
+#   slice(1) %>%
+#   filter(diff< 160) %>%
+#   ggplot(aes(diff)) +
+#   geom_density(col="#00ABE1") +
+#   geom_vline(xintercept=0, lty=2, col="red")   +
+#   theme_slcc() +
+#   labs(title= "Distribution of CPT1 scores by passing and failing",
+#        x = "CPT1 scores (centered at passing threshold)") 
+# 
+# How many low CPT1 students do not take reading sequence?
+
+# s3 %>%
+#   filter(diff < 0,
+#          (is.na(engl1010_term) | engl1010_term >= term_seq2)) %>%
+#   group_by(id) %>%
+#   slice(1) %>%
+#   ungroup %>%
+#   summarize(count = n(),
+#             rdg900=sum(ifelse(!is.na(rdg900_term),1,0), na.rm=T),
+#             rdg990=sum(ifelse(!is.na(rdg990_term),1,0), na.rm=T),
+#             rdg_both =sum(ifelse(!is.na(rdg990_term) | !is.na(rdg900_term) ,1,0), na.rm=T))
+# 
+# # Explore non-reading students
+# nrow(subset(s3, is.na(rdg900_term) & is.na(rdg990_term) & diff < 0 & (is.na(engl1010_term) | engl1010_term >= term_seq2)))
+# 
+# ids <- unique(subset(s3, is.na(rdg900_term) & is.na(rdg990_term) & diff < 0 & (is.na(engl1010_term) | engl1010_term >= term_seq2))$id)
+# i=1
+# subset(s1, id == ids[i]) %>% arrange(term)
+# subset(s3, id == ids[i]) %>% arrange(term)
+# #subset(s, person_uid == ids[i]) %>% arrange(academic_period)
+# i = i + 1
+```
+
+```{r}
+
+s4 <- s3 %>%
+  mutate(treatment = ifelse(diff < 0 & ((!is.na(rdg900_term)  & rdg900_termseq < term_seq | 
+                                           (!is.na(rdg990_term)  & rdg990_termseq < term_seq))),1,0),
+         control = ifelse(diff >= 0 & is.na(rdg900_term)  & is.na(rdg990_term),1,0)) %>% 
+  mutate(reading_intervention = ifelse(treatment==1, "treatment",
+                                       ifelse(control == 1, "control", NA)))
+
+
+```
+
+Taking and passing a reading course reading improved grades for students with below-threshold CPT1 scores.  As noted above, we used two different approaches:  one that assessed the effect of the reading courses, and another that assessed the effect of the reading pre-requisite.
+
+1. We used regression discontinuity to assess the effect of reading courses. The problem with regression discontinuity is that we can't do causal inference beyond a fairly narrow band on either side of the pre-requisite threshold. 
+
+2. To assess the effect of reading pre-requisite more broadly we compared grades in courses with reading pre-requisite at different CPT1 levels, both before the implementation of the reading pre-requisite and after.  The problem with this method is that there may  have been changes in the implementation or grading of the CPT1 exam over the years that produced observed differences.  
+
+Figure  \@ref(fig:rd) depicts the results of the regression discontinuity.  A regression discontinuity that showed no effect for the reading courses would consist in the yellow regression line on the left (the so-called treatment group, consisting in students with below threshold CPT1 scores who took reading courses) simply being a continuation of the blue regression line on the right (the control group, consisting in students with above threshold CPT1 scores who did not take any reading courses).  The yellow line is clearly *not* a continuation of the blue line, however, so we can conclude that there was an effect of the treatment. The intercept, at 0, was higher for those with reading courses and the slope of the line was flatter.  The difference in average grade at the intercept was about .16 on a 4 point scale.\footnote{This result is from a multilevel model with student and course as random effects, with the bandwidth set at -10 and 10.}  This is a modest effect.  More noteworthy, perhaps, is the slope difference between the two regression lines (flatter for the treatment group), which suggests that the reading course helped students with lower CPT1 scores more than it did students with higher scores who were closer to the cutoff.
+
+```{r rd, fig.cap="Regression discontinuity study of grade performance in courses with reading pre-requisite, comparing treatment (yellow, on the left) and control (blue, on the right).  This plot is an illustration of the underlying statistical result which indicates a difference in average grade of treatment compared to control of .16 in a band of -10 to 10 around 0. Each dot represents the average grade at a particular CPT1 score.  The slope difference between the two regression lines suggests that the reading course helped students with lower CPT1 scores more than it did students with higher scores.",results=T}
+
+s4 %>%
+  dplyr::select(diff, `reading pre-requisite` = reading_intervention, num_grade) %>%
+  na.omit() %>%
+  group_by(`reading pre-requisite`, diff) %>%
+  dplyr::summarize(count = n(),
+                   grade = mean(num_grade)) %>%
+  filter(diff > -20, diff < 20) %>%
+  ggplot(aes(diff, grade, col=`reading pre-requisite`)) +
+           geom_point() +
+           stat_smooth(method= "lm",se=F) +
+  ylim(c(2,3)) +
+  labs(y = "average grade",
+       x = "CPT1 scores, centered at passing threshold" ) +
+    theme_slcc() +
+  scale_colour_slcc() 
+
+
+# library(lme4)
+# summary(lm(num_grade ~ reading_intervention + diff, data = subset(s4, diff > -10 & diff < 10)))
+# summary(lmer(num_grade ~ reading_intervention +  diff + (1|class) + (1|id), data = subset(s4, diff > -20 & diff < 20)))
+
+
+
+```
+
+Figure  \@ref(fig:compare) depicts average grade performance in courses with reading pre-requisite at different CPT1 scores (which have been summarized with a local regression line to reduce noise), comparing two periods:  before and after implementation of the reading pre-requisite.  Students in the before period who elected to take a reading course have been included in this plot, as have students in the after period who did not take a reading course.  Where the shaded areas overlap there were no statistical differences. We can see that, at lower CPT1 scores, students did better after implementation of the reading pre-requisite, which is consistent with the result above from the regression discontinuity.  There the flatter regression slope for the treatment group suggested that the reading requirement produced the biggest lift for low CPT1 students.
+
+```{r  compare, fig.cap="Comparison of average grades in courses with reading pre-requisite, before and after implementation of the reading pre-requisite. Students in the before period who elected to take a reading course have been included in this dataset. Where the shaded areas overlap there are no statistical differences. We can see that, at lower CPT1 scores, students did better after implementation of the reading pre-requisite.", results=T}
+# alternative method
+library(tidyverse)
+s1 <- unique(s1)
+
+s1$before_after <- ifelse(is.na(s1$test_threshold), "before", "after")
+
+s1 %>% 
+  mutate(time = before_after)%>%
+  filter(class != "RDG0990",
+         class != "RDG0900",
+         class != "ENGL0990",
+         class != "ENGL0900",
+         class != "WRTG0990",
+        class != "WRTG0900",
+        final_grade!="TR") %>%
+  group_by(id) %>%
+  mutate(term_seq2 = find_term_seq(term, gap =F)) %>%
+  filter(term_seq2==1) %>%
+  group_by(ts = as.numeric(test_score), time) %>%
+  dplyr::summarize(count = n(),
+            grade = mean(num_grade, na.rm=T))  %>%
+  filter(ts < 130, ts > 28) %>%
+  ggplot(aes(ts, grade, col=time)) +
+  #geom_line() +
+  stat_smooth() +
+    theme_slcc() +
+  scale_colour_slcc() +
+  labs(x = "CPT1 scores",
+       y = "average grade")
+  
+```
+
+
+
+
+
+```{r include=F}
+# regression study
+
+# r_study <- s1 %>%
+#   group_by(id) %>%
+#   mutate(reading = ifelse(any(class %in% c("RDG0990","RDG0900","ENGL0990", "ENGL0900", "WRTG900","WRTG990")), 1,0)) %>%
+#   filter(class != "RDG0990",
+#          class != "RDG0900",
+#          class != "ENGL0990",
+#          class != "ENGL0900",
+#          class != "WRTG0990",
+#         class != "WRTG0900",
+#         ((before_after=="before" & reading==0) | before_after=="after")) %>%
+#   mutate(ts = as.numeric(substr(test_score, 1,2))) %>%
+#   group_by(id) %>%
+#   mutate(term_seq2 = find_term_seq(term, gap =F)) %>%
+#   filter(term_seq2==1)
+# 
+# 
+# r_study %>%
+#   group_by(ts,before_after) %>%
+#   summarize(n(),
+#             mean(num_grade, na.rm=T))
+# 
+
+
+```
+
+
+It is difficult to be precise about the difference in the grade-CPT1 relationship that we observe in Figure  \@ref(fig:compare), for the reasons mentioned above: the implementation of CPT1 may have changed over the years, biasing results, and we are also not correcting for differences in course difficulty, instructor grading, or student preparation.  Nevertheless, a rough calculation suggests that the grade difference associated with the reading pre-requisite in the region of CPT1 40-50 may be around .3-.4 centered right around the C grade: average grades were a little above 2.0 after the reading pre-requisite, and a little below 2.0 before the pre-requisite. 
+
+# Discussion
+
+Reading courses improved grades for low CPT1 students, but the improvement was fairly small (Figure \@ref(fig:rd)). Additionally, the reading pre-requisite was associated with higher grades (Figure \@ref(fig:compare).  One argument in favor of the reading pre-requisite is that the improvement was concentrated in a critical region right around the C grade:  students, after all, need to maintain a GPA above 2.0 to remain in good standing, and the reading pre-requisite seemed to have lifted the average grade above this threshold.  
+
+The trend in developmental education has been to shorten, or eliminate through co-requisite supplemental courses, the developmental pipeline.  (The recent integration of RDG900 and WRTG900 into ENGL900 and RDG990 and WRTG990 into ENGL990 is an example of this trend at SLCC.)  The rationale for shortening the pipeline can be seen in Figure \@ref(fig:cpt1diffdist) and \@ref(fig:cpt1):  relatively few students who test into the reading pre-requisite persist to take the college level course for which they were ostensibly preparing.  In fact, the number of developmental students managing to pass college level courses could actually go up with the removal the pre-requisite, even if pass rates were to decline.   However, the evidence that this would be the case at SLCC is weak, and the probable difference would likely be negligible.  
+
+Placement practices are currently being reconsidered at SLCC.  A large scale experiment is underway to test different methods for placing students into key general education courses  The reading requirement could be handled as guided self-placement.  Many low CPT1 students chose to take the reading courses before they were a formal requirement (Figure \@ref(fig:beforeafter)).  A guided self-placement process could be designed that would strengthen and inform such a choice.  Regardless of the method used for placement, however, the reading pre-requisite does seem to work to support the college level performance of low CPT1 students.
+
+**Recommendation**:  Reading courses improved grades in courses with a reading pre-requisite, but the reading pre-requisite also appears to have substantially diminished student persistence into college-level courses.  For this reason, we recommend that SLCC keep the reading pre-requisite in place but continue exploring how to make the reading pre-requisite less burdensome for low CPT1 students. The creation of ENGL900/ENGL990 was a step in the right direction.
+
+```{r include=F}
+# s1 %>%
+#   mutate(time = before_after)%>%
+#   group_by(id) %>%
+#   mutate(reading = ifelse(any(class %in% c("RDG0990","RDG0900","ENGL0990", "ENGL0900", "WRTG900","WRTG990")), 1,0)) %>%
+#   filter(class != "RDG0990",
+#          class != "RDG0900",
+#          class != "ENGL0990",
+#          class != "ENGL0900",
+#          class != "WRTG0990",
+#         class != "WRTG0900",
+#         final_grade != "TR",
+#         !is.na(num_grade),
+#         ((time=="before" & reading==0) | time=="after"))%>%
+# mutate(ts = as.numeric(substr(test_score, 1,2))) %>%
+#   group_by(id) %>%
+#   mutate(term_seq2 = find_term_seq(term, gap =F)) %>%
+#   filter(term_seq2==1,
+#          class!="ENGL1010",
+#          num_grade > 2) %>%
+#   group_by(ts,time) %>%
+#   summarize(count = n()) %>%
+#   group_by(time) %>%
+#   mutate(total= sum(count),
+#          perc= round(count/total,4))
+```
+
+
